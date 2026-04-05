@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мой Java Список</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding-top: 50px; }
+        .app-card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        h2 { color: #333; text-align: center; }
+        
+        .form-group { display: flex; gap: 10px; margin-bottom: 20px; }
+        input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
+        button { background: #007AFF; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #0056b3; }
+
+        ul { list-style: none; padding: 0; }
+        li { background: #f9f9f9; margin-bottom: 8px; padding: 12px; border-radius: 8px; border-left: 4px solid #007AFF; color: #444; }
+        .empty-msg { text-align: center; color: #999; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div class="app-card">
+    <h2>📝 Мои заметки</h2>
+
+    <form action="/add" method="post" class="form-group">
+        <input type="text" name="note" placeholder="Что нужно сделать?" required>
+        <button type="submit"> + </button>
+    </form>
+
+    <ul>
+        <li th:each="item : ${notes}" th:text="${item}">Пример заметки</li>
+    </ul>
+    
+    <p th:if="${notes.isEmpty()}" class="empty-msg">Список пока пуст...</p>
+</div>
+
+</body>
+</html>
