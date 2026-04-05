@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Личный кабинет | GosKom</title>
+    <link rel="stylesheet" th:href="@{/style.css}"> <style>
+        .profile-card {
+            text-align: left;
+            border-top: 2px solid #3498db;
+            padding-top: 20px;
+        }
+        .info-row {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #7f8c8d;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        .btn-secondary {
+            background-color: #95a5a6;
+            text-decoration: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            text-align: center;
+            flex: 1;
+        }
+        .btn-main {
+            background-color: #3498db;
+            text-decoration: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            text-align: center;
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Личный кабинет</h2>
+
+    <div class="profile-card">
+        <div class="info-row">
+            <span class="info-label">Имя:</span>
+            <span th:text="${user.name}">Имя пользователя</span>
+        </div>
+        
+        <div class="info-row">
+            <span class="info-label">Email:</span>
+            <span th:text="${user.email}">example@mail.com</span>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">Аккаунт создан:</span>
+            <span th:text="${#temporals.format(user.createdAt, 'dd.MM.yyyy HH:mm')}">01.01.2026</span>
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <a th:href="@{/api/bills}" class="btn-main">Мои счета</a>
+        
+        <form th:action="@{/logout}" method="post" style="flex: 1;">
+            <button type="submit" class="btn-secondary" style="width: 100%;">Выйти</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

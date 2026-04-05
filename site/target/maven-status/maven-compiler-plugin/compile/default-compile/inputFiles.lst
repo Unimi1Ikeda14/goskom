@@ -1,2 +1,7 @@
-D:\java\sird\site\src\main\java\com\goskom\site\PageController.java
+D:\java\sird\site\src\main\java\com\goskom\site\controlles\MainControlles.java
+D:\java\sird\site\src\main\java\com\goskom\site\dto\RegistrationDto.java
+D:\java\sird\site\src\main\java\com\goskom\site\entities\User.java
+D:\java\sird\site\src\main\java\com\goskom\site\repositories\UserRepositories.java
+D:\java\sird\site\src\main\java\com\goskom\site\security\SecurityConfig.java
+D:\java\sird\site\src\main\java\com\goskom\site\services\UserService.java
 D:\java\sird\site\src\main\java\com\goskom\site\SiteApplication.java
