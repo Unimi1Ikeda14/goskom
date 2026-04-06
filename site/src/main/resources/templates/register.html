@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация | GosKom</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; }
+        .reg-container { width: 300px; border: 1px solid #ccc; padding: 20px; border-radius: 8px; }
+        .error { color: red; font-size: 0.9em; margin-bottom: 10px; }
+        input { width: 100%; margin-bottom: 15px; padding: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="reg-container">
+    <h2>Регистрация</h2>
+
+    <div th:if="${error}" class="error">
+        <p th:text="${error}"></p>
+    </div>
+
+    <form th:action="@{/register}" th:object="${userDto}" method="post">
+        
+        <label>Имя пользователя:</label>
+        <input type="text" th:field="*{name}" placeholder="Введите ваше имя" required />
+
+        <label>Email:</label>
+        <input type="email" th:field="*{email}" placeholder="example@mail.com" required />
+
+        <label>Пароль:</label>
+        <input type="password" th:field="*{password}" placeholder="Минимум 6 символов" required />
+
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+
+    <p style="margin-top: 15px; font-size: 0.9em;">
+        Уже есть аккаунт? <a th:href="@{/login}">Войти</a>
+    </p>
+</div>
+
+</body>
+</html>
