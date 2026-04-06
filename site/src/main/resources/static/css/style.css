@@ -9,7 +9,7 @@ body {
     margin: 0;
 }
 
-/* Контейнер формы */
+
 .login-container {
     background: white;
     padding: 40px;
@@ -20,7 +20,7 @@ body {
 }
 
 h2 {
-    color: #2c3e50; /* Темно-синий заголовок */
+    color: #2c3e50; 
     text-align: center;
     margin-bottom: 30px;
 }
@@ -41,10 +41,10 @@ input[type="email"], input[type="password"] {
     padding: 12px;
     border: 1px solid #dcdde1;
     border-radius: 4px;
-    box-sizing: border-box; /* Чтобы padding не раздувал ширину */
+    box-sizing: border-box; 
 }
 
-/* Кнопка входа */
+
 button {
     width: 100%;
     padding: 12px;
@@ -61,7 +61,6 @@ button:hover {
     background-color: #2980b9;
 }
 
-/* Сообщение об ошибке */
 .error-msg {
     color: #e74c3c;
     background: #fdeaea;
@@ -70,4 +69,28 @@ button:hover {
     margin-bottom: 20px;
     text-align: center;
     font-size: 14px;
+}
+form-footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.form-footer a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.form-footer a:hover {
+    color: #2c3e50;
+    text-decoration: underline;
+}
+
+
+input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+    transition: all 0.3s ease;
 }
