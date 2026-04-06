@@ -1,13 +1,10 @@
 package com.goskom.site.entities;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,8 +21,6 @@ import jakarta.persistence.Table;
         private String email;
         @Column(name = "password", nullable = false)
         private String password;
-        @Column(name = "createdAt", nullable = false)
-        private LocalDateTime createdAt;
 
         public User() {}
 
@@ -40,11 +35,4 @@ import jakarta.persistence.Table;
 
         public String getPassword() {return password;}
         public void setPassword(String password) {this.password = password;}
-
-        public LocalDateTime getCreatedAt() { return createdAt; }
-        public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-        @PrePersist
-        protected void onCreate() {
-            this.createdAt = java.time.LocalDateTime.now();
-        }
     }

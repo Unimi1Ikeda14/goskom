@@ -16,20 +16,17 @@ public class SecurityConfig
         return new BCryptPasswordEncoder();
     }  
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
+    {
         http
-            .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf.disable()) // Отключаем защиту CSRF, чтобы работали POST-запросы
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll() // Оставляем доступ ко всему для ЛР
+                .anyRequest().permitAll() // Разрешаем доступ ко всем страницам без логина
             )
-            // ДОБАВЬТЕ ЭТУ СТРОКУ:
-            .securityContext(context -> context.requireExplicitSave(false)) 
-            
-            .formLogin(form -> form.disable())
-            .httpBasic(basic -> basic.disable());
+            .formLogin(form -> form.disable()) // Убираем форму логина
+            .httpBasic(basic -> basic.disable()); // Убираем базовую аутентификацию
         
         return http.build();
     }
-    
 }
 
