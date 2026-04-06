@@ -20,9 +20,9 @@ public class SecurityConfig
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll() 
+                .anyRequest().permitAll() // Оставляем доступ ко всему для ЛР
             )
-            
+            // ДОБАВЬТЕ ЭТУ СТРОКУ:
             .securityContext(context -> context.requireExplicitSave(false)) 
             
             .formLogin(form -> form.disable())
