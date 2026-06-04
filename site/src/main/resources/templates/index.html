@@ -1,39 +1,81 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Мой Java Список</title>
-    <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding-top: 50px; }
-        .app-card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
-        h2 { color: #333; text-align: center; }
-        
-        .form-group { display: flex; gap: 10px; margin-bottom: 20px; }
-        input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
-        button { background: #007AFF; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        button:hover { background: #0056b3; }
-
-        ul { list-style: none; padding: 0; }
-        li { background: #f9f9f9; margin-bottom: 8px; padding: 12px; border-radius: 8px; border-left: 4px solid #007AFF; color: #444; }
-        .empty-msg { text-align: center; color: #999; font-style: italic; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ГосКом</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
+
 <body>
 
-<div class="app-card">
-    <h2>📝 Мои заметки</h2>
+    <header class="navbar">
+        <div class="logo" 
+             hx-get="/welcome" 
+             hx-target="#main-content" 
+             hx-push-url="/" 
+             style="cursor: pointer;">
+            🏢 ГосКом
+        </div>
+        
+        <div class="nav-links">
+            <div sec:authorize="hasAuthority('ADMIN')">
+                <a hx-get="/admin" 
+                   hx-target="#main-content" 
+                   hx-push-url="/admin" 
+                   class="btn-nav-admin">
+                    💼 Панель Админа
+                </a>
+            </div>
 
-    <form action="/add" method="post" class="form-group">
-        <input type="text" name="note" placeholder="Что нужно сделать?" required>
-        <button type="submit"> + </button>
-    </form>
+            <div sec:authorize="isAuthenticated()" class="user-nav-block">
+                <a hx-get="/profile" 
+                   hx-target="#main-content" 
+                   hx-push-url="/profile" 
+                   class="user-nav-block">
+                    
+                    <img th:if="${currentUser != null && currentUser.avatarPath != null}" 
+                         th:src="${currentUser.avatarPath}" 
+                         alt="Avatar" 
+                         class="avatar-mini">
+                    
+                    <div th:unless="${currentUser != null && currentUser.avatarPath != null}" 
+                         class="avatar-mini-placeholder">
+                        👤
+                    </div>
+                    
+                    <span th:text="${currentUser != null ? currentUser.name : 'Жилец'}" class="user-nav-name">Имя</span>
+                </a>
 
-    <ul>
-        <li th:each="item : ${notes}" th:text="${item}">Пример заметки</li>
-    </ul>
-    
-    <p th:if="${notes.isEmpty()}" class="empty-msg">Список пока пуст...</p>
-</div>
+                <form th:action="@{/logout}" method="POST" style="display: inline; margin: 0;">
+                    <button type="submit" class="btn-nav-logout">Выйти</button>
+                </form>
+            </div>
+            
+            <div sec:authorize="isAnonymous()" class="nav-links">
+                <a hx-get="/login" hx-target="#main-content" hx-push-url="/login" class="btn-nav-login">Войти</a>
+                <a hx-get="/register" hx-target="#main-content" hx-push-url="/register" class="btn-nav-register">Регистрация</a>
+            </div>
+        </div>
+    </header>
 
+    <main id="main-content" class="main-layout">
+        <div th:insert="~{__${page ?: 'welcome'}__ :: content}" style="width: 100%;"></div>
+    </main>
+
+    <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+            const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+            if (csrfToken && csrfHeader) {
+                event.detail.headers[csrfHeader] = csrfToken;
+            }
+        });
+    </script>
 </body>
 </html>

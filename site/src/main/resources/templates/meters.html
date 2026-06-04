@@ -1,0 +1,92 @@
+<div class="profile-wrapper">
+    
+    <div style="margin-bottom: 25px;">
+        <button hx-get="/profile" hx-target="closest .profile-wrapper" hx-swap="outerHTML" hx-push-url="true" class="btn" style="padding: 10px 20px; background-color: #7f8c8d; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">
+            ← Вернуться в профиль
+        </button>
+    </div>
+
+    <div th:if="${successMessage}" class="msg-success" th:text="${successMessage}"></div>
+    <div th:if="${error}" class="msg-error" th:text="${error}"></div>
+
+    <div class="goskom-card" style="border-top: 5px solid #3498db; padding: 30px;">
+        <h2 class="card-title" style="font-size: 22px; margin-bottom: 10px;">📊 Внесение текущих показаний</h2>
+        <p style="color: #7f8c8d; margin-bottom: 25px;">Внесите актуальные данные счетчиков. Они будут использованы при формировании следующей жировки.</p>
+
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            
+            <!-- Горячая вода -->
+            <form hx-post="/meters/submit" hx-target="closest .profile-wrapper" hx-swap="outerHTML" class="meter-card-form">
+                <input type="hidden" name="type" value="HOT_WATER">
+                <div class="meter-flex-row">
+                    <div class="meter-info-block">
+                        <span style="font-size: 30px;">🔥</span>
+                        <div>
+                            <strong style="font-size: 16px; color: #2c3e50; display: block;">Горячее водоснабжение</strong>
+                            <span style="font-size: 13px; color: #7f8c8d;" th:text="'Текущее в базе: ' + ${user.hotWater != null ? user.hotWater : 0.0} + ' м³'">Предыдущее: 0 м³</span>
+                        </div>
+                    </div>
+                    <div class="meter-input-group">
+                        <input type="number" step="0.1" name="value" class="input-field" placeholder="Новые данные" required style="width: 150px; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                        <button type="submit" class="btn" style="background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold;">Внести</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Холодная вода -->
+            <form hx-post="/meters/submit" hx-target="closest .profile-wrapper" hx-swap="outerHTML" class="meter-card-form">
+                <input type="hidden" name="type" value="COLD_WATER">
+                <div class="meter-flex-row">
+                    <div class="meter-info-block">
+                        <span style="font-size: 30px;">💧</span>
+                        <div>
+                            <strong style="font-size: 16px; color: #2c3e50; display: block;">Холодное водоснабжение</strong>
+                            <span style="font-size: 13px; color: #7f8c8d;" th:text="'Текущее в базе: ' + ${user.coldWater != null ? user.coldWater : 0.0} + ' м³'">Предыдущее: 0 м³</span>
+                        </div>
+                    </div>
+                    <div class="meter-input-group">
+                        <input type="number" step="0.1" name="value" class="input-field" placeholder="Новые данные" required style="width: 150px; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                        <button type="submit" class="btn" style="background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold;">Внести</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Электроэнергия -->
+            <form hx-post="/meters/submit" hx-target="closest .profile-wrapper" hx-swap="outerHTML" class="meter-card-form">
+                <input type="hidden" name="type" value="ELECTRICITY">
+                <div class="meter-flex-row">
+                    <div class="meter-info-block">
+                        <span style="font-size: 30px;">⚡</span>
+                        <div>
+                            <strong style="font-size: 16px; color: #2c3e50; display: block;">Электроэнергия</strong>
+                            <span style="font-size: 13px; color: #7f8c8d;" th:text="'Текущее в базе: ' + ${user.electricity != null ? user.electricity : 0} + ' кВт/ч'">Предыдущее: 0 кВт/ч</span>
+                        </div>
+                    </div>
+                    <div class="meter-input-group">
+                        <input type="number" name="value" class="input-field" placeholder="Новые данные" required style="width: 150px; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                        <button type="submit" class="btn" style="background: #f1c40f; color: #2c3e50; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold;">Внести</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Газоснабжение -->
+            <form hx-post="/meters/submit" hx-target="closest .profile-wrapper" hx-swap="outerHTML" class="meter-card-form">
+                <input type="hidden" name="type" value="GAS">
+                <div class="meter-flex-row">
+                    <div class="meter-info-block">
+                        <span style="font-size: 30px;">💨</span>
+                        <div>
+                            <strong style="font-size: 16px; color: #2c3e50; display: block;">Газоснабжение</strong>
+                            <span style="font-size: 13px; color: #7f8c8d;" th:text="'Текущее в базе: ' + ${user.gas != null ? user.gas : 0.0} + ' м³'">Предыдущее: 0 м³</span>
+                        </div>
+                    </div>
+                    <div class="meter-input-group">
+                        <input type="number" step="0.01" name="value" class="input-field" placeholder="Новые данные" required style="width: 150px; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                        <button type="submit" class="btn" style="background: #1abc9c; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold;">Внести</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

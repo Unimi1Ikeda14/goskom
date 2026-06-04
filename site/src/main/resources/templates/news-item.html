@@ -1,0 +1,18 @@
+<div th:fragment="content" style="width: 100%;">
+    <div style="margin-bottom: 15px;">
+        <button hx-get="/news" hx-target="#main-content" hx-push-url="/news" style="background: none; border: none; color: #3498db; font-weight: bold; cursor: pointer; font-size: 15px;">← Вернуться в ленту</button>
+    </div>
+
+    <article class="goskom-card" style="padding: 40px; background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <span th:text="${#temporals.format(newsItem.createdAt, 'dd MMMM yyyy, HH:mm')}" style="color: #95a5a6; font-size: 14px; font-weight: 600;">Дата</span>
+        <h1 th:text="${newsItem.title}" style="color: #2c3e50; font-size: 28px; margin: 10px 0 25px 0;">Заголовок новости</h1>
+        
+        <div th:if="${newsItem.imageUrl != null && !newsItem.imageUrl.isEmpty()}" style="margin-bottom: 30px; text-align: center;">
+            <img th:src="${newsItem.imageUrl}" style="max-width: 100%; max-height: 450px; border-radius: 6px;">
+        </div>
+
+        <div th:text="${newsItem.fullText}" style="color: #2c3e50; font-size: 16px; line-height: 1.8; white-space: pre-line;">
+            Полный текст...
+        </div>
+    </article>
+</div>

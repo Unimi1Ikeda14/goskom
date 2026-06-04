@@ -1,96 +1,1138 @@
-/* Общие настройки фона */
-body {
-    background-color: #f4f7f6;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+/* ==========================================================================
+   ГЛОБАЛЬНЫЕ СТИЛИ И СБРОС СТРУКТУРЫ
+   ========================================================================== */
+* {
+    box-sizing: border-box;
     margin: 0;
+    padding: 0;
 }
 
-
-.login-container {
-    background: white;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 400px;
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f4f6f9;
+    color: #2c3e50;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-h2 {
-    color: #2c3e50; 
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-/* Стили полей ввода */
-.form-group {
-    margin-bottom: 20px;
-}
-
-label {
+img, picture, video, iframe {
+    max-width: 100%;
+    height: auto;
     display: block;
-    margin-bottom: 8px;
-    color: #7f8c8d;
 }
 
-input[type="email"], input[type="password"] {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #dcdde1;
-    border-radius: 4px;
-    box-sizing: border-box; 
+button, input, select, textarea {
+    font-family: inherit;
 }
 
+/* ==========================================================================
+   ШАПКА (HEADER) И НАВИГАЦИЯ
+   ========================================================================== */
+.navbar {
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
 
-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #3498db; /* Яркий синий */
-    color: white;
-    border: none;
-    border-radius: 4px;
+.logo {
+    font-size: 22px;
+    font-weight: 800;
+    color: #3498db;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
     cursor: pointer;
-    font-size: 16px;
-    transition: background 0.3s;
 }
 
-button:hover {
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Кнопки авторизации/регистрации */
+.btn-nav-login, .btn-nav-register, .btn-nav-admin, .btn-nav-logout {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-nav-login {
+    color: #34495e;
+    background-color: transparent;
+}
+.btn-nav-login:hover {
+    color: #3498db;
+}
+
+.btn-nav-register {
+    color: white;
+    background-color: #3498db;
+}
+.btn-nav-register:hover {
     background-color: #2980b9;
 }
 
-.error-msg {
+.btn-nav-admin {
+    color: white;
+    background-color: #e67e22;
+}
+.btn-nav-admin:hover {
+    background-color: #d35400;
+}
+
+.btn-nav-logout {
+    color: #7f8c8d;
+    background-color: transparent;
+    font-family: inherit;
+}
+.btn-nav-logout:hover {
     color: #e74c3c;
-    background: #fdeaea;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: 14px;
-}
-form-footer {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 14px;
 }
 
-.form-footer a {
-    color: #3498db;
+/* Блок авторизованного юзера в шапке */
+.user-nav-block {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     text-decoration: none;
-    transition: color 0.3s;
-}
-
-.form-footer a:hover {
     color: #2c3e50;
-    text-decoration: underline;
+    font-weight: 600;
+    cursor: pointer;
+}
+.user-nav-block:hover .user-nav-name {
+    color: #3498db;
 }
 
+.avatar-mini {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #3498db;
+}
 
-input:focus {
+.avatar-mini-placeholder {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #eceff1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    border: 2px solid #bdc3c7;
+}
+
+.btn-nav-billing {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    color: #546e7a;
+    padding: 8px 12px;
+    transition: color 0.2s;
+    cursor: pointer;
+}
+.btn-nav-billing:hover {
+    color: #3498db;
+}
+
+/* ==========================================================================
+   ОСНОВНОЙ СЕКТОР КОНТЕНТА (MAIN CONTAINER)
+   ========================================================================== */
+.main-layout {
+    flex: 1;
+    display: flex;
+    padding: 24px;
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Центрированный контейнер для страниц логина/регистрации */
+.page-centered-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+}
+
+/* Универсальные карточки */
+.goskom-card, .form-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    padding: 25px;
+    width: 100%;
+}
+
+.form-card {
+    border-top: 4px solid #3498db;
+}
+
+.form-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #f4f6f9;
+    padding-bottom: 10px;
+}
+
+/* ==========================================================================
+   ФОРМЫ И ЭЛЕМЕНТЫ ВВОДА
+   ========================================================================== */
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    color: #34495e;
+    margin-bottom: 8px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-family: inherit;
+    border: 1px solid #dcdde1;
+    border-radius: 4px;
+    color: #2c3e50;
+    background-color: #f8f9fa;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+.input-field:focus {
     outline: none;
     border-color: #3498db;
-    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
-    transition: all 0.3s ease;
+    background-color: white;
+}
+
+/* Кнопки */
+.btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: white;
+}
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+/* ==========================================================================
+   БЛОКИ УВЕДОМЛЕНИЙ НА СТРАНИЦАХ
+   ========================================================================== */
+.msg-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 12px 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.msg-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 12px 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.msg-error-text {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   СТРАНИЦА ПРОФИЛЯ ЖИЛЬЦА
+   ========================================================================== */
+.profile-wrapper {
+    width: 100%;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 30px;
+    align-items: start;
+}
+
+@media (max-width: 768px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.profile-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Аватар в профиле */
+.avatar-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.avatar-img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #3498db;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.avatar-placeholder {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background-color: #eceff1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color: #b0bec5;
+    border: 3px solid #bdc3c7;
+}
+
+/* Передача показаний счетчиков */
+.meter-row {
+    border-bottom: 1px solid #f4f6f9;
+    padding: 15px 0;
+}
+.meter-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.meter-flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.meter-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.meter-icon {
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    background-color: #f8f9fa;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.meter-title {
+    font-weight: 700;
+    color: #2c3e50;
+    font-size: 15px;
+}
+
+.meter-current-val {
+    font-size: 13px;
+    color: #7f8c8d;
+    margin-top: 2px;
+}
+
+.meter-input-group {
+    display: flex;
+    gap: 8px;
+}
+
+.input-meter {
+    width: 80px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #dcdde1;
+    border-radius: 4px;
+    text-align: center;
+    font-family: inherit;
+}
+.input-meter:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.btn-meter-ok {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    font-weight: 700;
+    font-size: 13px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.btn-meter-ok:hover {
+    background-color: #27ae60;
+}
+
+/* Кликабельный заголовок квитанций в профиле */
+.card-title-link {
+    cursor: pointer;
+    transition: color 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.card-title-link:hover {
+    color: #3498db;
+}
+
+.title-link-arrow {
+    font-size: 16px;
+    color: #90a4ae;
+    transition: transform 0.2s ease;
+}
+.card-title-link:hover .title-link-arrow {
+    transform: translateX(4px);
+    color: #3498db;
+}
+
+/* Списки счетов */
+.bill-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.bill-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #eef0f2;
+}
+
+.bill-name {
+    font-weight: 600;
+    color: #34495e;
+    font-size: 15px;
+    margin-bottom: 6px;
+}
+
+.bill-amount {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.badge-paid {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    background-color: #e8f8f0;
+    color: #2ecc71;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.bill-amount-status {
+    font-size: 18px;
+    font-weight: 800;
+}
+.text-paid {
+    color: #2ecc71;
+}
+.text-unpaid {
+    color: #e74c3c;
+}
+
+.no-bills-profile {
+    color: #7f8c8d;
+    padding: 20px;
+    font-style: italic;
+}
+
+.profile-billing-link-block {
+    text-align: center;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px dashed #eef0f2;
+}
+.link-to-all-bills {
+    font-size: 13px;
+    color: #3498db;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+.link-to-all-bills:hover {
+    text-decoration: underline;
+    color: #2980b9;
+}
+
+/* ==========================================================================
+   ПОЛНАЯ СТРАНИЦА БИЛЛИНГА
+   ========================================================================== */
+.billing-wrapper {
+    width: 100%;
+}
+
+.billing-header-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+/* Панель фильтров */
+.billing-filter-panel {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px 20px;
+    flex-wrap: wrap;
+}
+
+.billing-filter-panel .search-box {
+    flex: 2;
+    min-width: 250px;
+}
+
+.billing-filter-panel .filter-box,
+.billing-filter-panel .sort-box {
+    flex: 1;
+    min-width: 180px;
+}
+
+.select-field {
+    background-color: white;
+    cursor: pointer;
+    font-weight: 600;
+    color: #455a64;
+}
+.select-field:focus {
+    border-color: #3498db;
+}
+
+/* Расширенный список счетов */
+.bill-grid-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.bill-extended-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #eef0f2;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.bill-extended-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+}
+
+.bill-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.bill-icon-box {
+    font-size: 22px;
+    width: 44px;
+    height: 44px;
+    background-color: #e3f2fd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bill-extended-name {
+    font-weight: 700;
+    color: #2c3e50;
+    font-size: 16px;
+}
+
+.bill-date-stub {
+    font-size: 13px;
+    color: #90a4ae;
+    margin-top: 3px;
+}
+
+.bill-actions {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.bill-extended-amount {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.amount-paid {
+    color: #2ecc71;
+}
+.amount-unpaid {
+    color: #e74c3c;
+}
+
+.btn-pay-bill {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    font-weight: 700;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.btn-pay-bill:hover {
+    background-color: #2980b9;
+}
+
+.no-bills-msg {
+    color: #7f8c8d;
+    padding: 30px 0;
+    font-style: italic;
+}
+
+/* ==========================================================================
+   УТИЛИТЫ
+   ========================================================================== */
+.text-center {
+    text-align: center;
+}
+/* ==========================================
+   ОБЩИЕ СТИЛИ ДЛЯ АДАПТИВНОСТИ ГОСКОМ
+   ========================================== */
+.support-container {
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.admin-wrapper {
+    max-width: 950px;
+    margin: 0 auto;
+    padding: 15px;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Общие карточки ГосКом и формы */
+.goskom-card, .admin-wrapper > div[style*="background: white"] {
+    background: white;
+    padding: 25px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+    margin-bottom: 25px !important;
+}
+
+/* Сброс полей ввода для мобилок */
+.input-field, input[type="text"], input[type="url"], input[type="number"], input[type="datetime-local"], select, textarea {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 11px !important;
+    border: 1px solid #ccc !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+}
+
+/* Флекс-сетки для форм */
+.form-row-flex {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.form-group-flex {
+    flex: 1;
+    min-width: 250px;
+}
+
+/* Адаптивные кнопки */
+.btn-primary, button[type="submit"] {
+    width: auto;
+    padding: 12px 30px !important;
+    cursor: pointer;
+    border-radius: 6px !important;
+    font-weight: bold !important;
+    border: none !important;
+}
+
+/* Шапка центра поддержки */
+.support-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* Список карточек поддержки */
+.tickets-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Карточка заявки */
+.ticket-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.ticket-desc {
+    margin: 0 0 8px 0;
+    color: #555;
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 600px;
+    word-break: break-word;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    min-width: 0;
+}
+
+/* ==========================================
+   МЕДИА-ЗАПРОСЫ ДЛЯ СМАРТФОНОВ
+   ========================================== */
+
+/* Адаптивность для шапок и карточек общего вида */
+@media (max-width: 768px) {
+    .goskom-card, .admin-wrapper > div[style*="background: white"] {
+        padding: 15px !important;
+    }
+    .btn-primary, button[type="submit"], .btn-create {
+        width: 100% !important;
+        text-align: center;
+    }
+    .form-group-flex {
+        min-width: 100% !important;
+    }
+}
+
+@media (max-width: 680px) {
+    .ticket-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .ticket-status-wrapper {
+        width: 100%;
+        text-align: left;
+        margin-top: 5px;
+    }
+}
+
+@media (max-width: 600px) {
+    .support-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* Адаптивная таблица пользователей в админке */
+@media (max-width: 850px) {
+    .goskom-table thead {
+        display: none;
+    }
+    
+    .goskom-table tr {
+        display: block;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 15px;
+        background: #fdfefe;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .goskom-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 4px !important;
+        border: none !important;
+        border-bottom: 1px dashed #f0f0f0 !important;
+        font-size: 14px;
+        text-align: right !important;
+    }
+
+    .goskom-table td:last-child {
+        border-bottom: none !important;
+        justify-content: center !important;
+        margin-top: 10px;
+        padding-top: 12px !important;
+    }
+
+    .goskom-table td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: 600;
+        color: #7f8c8d;
+        text-align: left;
+        padding-right: 10px;
+    }
+}
+/* ==========================================
+   ОБЩАЯ СЕТКА И ШАПКА САЙТА (ИЗ index.html)
+   ========================================== */
+.main-layout {
+    padding: 15px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: white;
+    color: #2c3e50;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    flex-wrap: wrap; /* Чтобы ссылки падали вниз на экранах крошечных телефонов */
+    gap: 15px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.user-nav-block {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #2c3e50;
+}
+
+/* На мобилках делаем шапку более центрированной */
+@media (max-width: 550px) {
+    .navbar {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px;
+    }
+    .nav-links {
+        justify-content: center;
+        width: 100%;
+    }
+    .user-nav-block {
+        flex-direction: column;
+        gap: 5px;
+    }
+    .user-nav-name {
+        font-size: 14px;
+    }
+}
+
+/* ==========================================
+   СТРАНИЦА АВТОРИЗАЦИИ И СТРАНИЦЫ С ФОРМАМИ
+   ========================================== */
+.page-centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    padding: 10px;
+}
+
+.form-card {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 450px) {
+    .form-card {
+        padding: 20px 15px;
+    }
+}
+
+/* ==========================================
+   СТРАНИЦА ПРОСМОТРА КВИТАНЦИИ (BILL)
+   ========================================== */
+.profile-wrapper {
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Фирменный блок плательщика и итогов */
+.bill-summary-box {
+    background: #fdfefe; 
+    border: 1px solid #e2e8f0; 
+    border-radius: 6px; 
+    padding: 20px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    flex-wrap: wrap; 
+    gap: 15px;
+}
+
+.bill-footer-actions {
+    margin-top: 25px; 
+    display: flex; 
+    justify-content: flex-end;
+}
+
+@media (max-width: 650px) {
+    /* Перестраиваем итоги квитанции в столбик */
+    .bill-summary-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .bill-summary-box > div {
+        text-align: left !important;
+        width: 100%;
+    }
+    .bill-footer-actions, .bill-footer-actions .btn-primary {
+        width: 100% !important;
+    }
+}
+
+/* Специфическая адаптивность таблицы тарифов в чеке */
+@media (max-width: 600px) {
+    .bill-invoice-table thead {
+        display: none; /* Скрываем заголовки на телефонах */
+    }
+    .bill-invoice-table tr {
+        display: block;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 10px;
+        background: #fafbfc;
+    }
+    .bill-invoice-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 5px !important;
+        border: none !important;
+        border-bottom: 1px dashed #e2e8f0 !important;
+        text-align: right !important;
+    }
+    .bill-invoice-table td:last-child {
+        border-bottom: none !important;
+        font-size: 18px;
+    }
+    .bill-invoice-table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #7f8c8d;
+        font-size: 13px;
+        text-align: left;
+    }
+}
+/* ==========================================
+   СТРАНИЦА ВНЕСЕНИЯ ПОКАЗАНИЙ (METERS)
+   ========================================== */
+.meter-card-form {
+    background: #fdfefe; 
+    border: 1px solid #e2e8f0; 
+    padding: 20px; 
+    border-radius: 6px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.meter-card-form:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.meter-flex-row {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    flex-wrap: wrap; 
+    gap: 15px;
+}
+
+.meter-info-block {
+    display: flex; 
+    align-items: center; 
+    gap: 15px;
+}
+
+.meter-input-group {
+    display: flex; 
+    gap: 10px; 
+    align-items: center;
+}
+
+/* Адаптив для карточек счетчиков */
+@media (max-width: 580px) {
+    .meter-flex-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .meter-input-group {
+        width: 100%;
+    }
+    
+    .meter-input-group .input-field {
+        flex-grow: 1; /* Инпут растягивается во всю ширину */
+        width: auto !important;
+    }
+    
+    .meter-input-group .btn {
+        padding: 10px 25px;
+    }
+}
+
+/* ==========================================
+   СТРАНИЦА ИСТOРИИ ПОКАЗАНИЙ (HISTORY)
+   ========================================== */
+.history-header-flex {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 20px; 
+    flex-wrap: wrap; 
+    gap: 15px;
+}
+
+.history-header-flex select,
+.history-header-flex .select-field {
+    width: auto;
+    min-width: 180px;
+}
+
+.meter-history-table {
+    width: 100%; 
+    border-collapse: collapse;
+}
+
+/* Мобильная адаптация таблицы архива */
+@media (max-width: 730px) {
+    .history-header-flex {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .history-header-flex select {
+        width: 100%; /* Фильтр на весь экран */
+    }
+
+    .meter-history-table thead {
+        display: none; /* Прячем заголовки таблицы */
+    }
+
+    .meter-history-table tr {
+        display: block;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        margin-bottom: 12px;
+        padding: 8px 12px;
+        background: #fdfefe;
+    }
+
+    .meter-history-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0 !important;
+        border: none !important;
+        border-bottom: 1px dashed #f1f2f6 !important;
+        text-align: right !important;
+    }
+
+    .meter-history-table td:last-child {
+        border-bottom: none !important;
+    }
+
+    /* Подкидываем названия колонок через data-label */
+    .meter-history-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #7f8c8d;
+        font-size: 13px;
+        text-align: left;
+    }
 }

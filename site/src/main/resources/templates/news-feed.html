@@ -1,0 +1,26 @@
+<div th:fragment="content" style="width: 100%;">
+    <div class="goskom-card" style="padding: 30px; background: white; border-radius: 8px;">
+        <h2 style="color: #2c3e50; margin-top: 0; border-bottom: 2px solid #ecf0f1; padding-bottom: 15px;">📜 Лента объявлений и событий GosKom</h2>
+        
+        <div th:if="${#lists.isEmpty(newsList)}" style="text-align: center; color: #7f8c8d; padding: 40px 0;">
+            Лента новостей пуста.
+        </div>
+
+        <div th:each="news : ${newsList}" style="padding: 20px 0; border-bottom: 1px solid #ecf0f1; display: flex; gap: 20px; flex-wrap: wrap;">
+            <div th:if="${news.imageUrl != null && !news.imageUrl.isEmpty()}" style="flex: 1; min-width: 200px; max-width: 250px;">
+                <img th:src="${news.imageUrl}" style="width: 100%; border-radius: 6px; object-fit: cover;">
+            </div>
+
+            <div style="flex: 2; min-width: 300px; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <span th:text="${#temporals.format(news.createdAt, 'dd MMMM yyyy в HH:mm')}" style="font-size: 13px; color: #95a5a6; font-weight: 600;">Дата</span>
+                    <h3 th:text="${news.title}" style="margin: 5px 0 10px 0; color: #2c3e50;">Заголовок</h3>
+                    <p th:text="${news.shortDescription}" style="color: #555; font-size: 15px; margin: 0; line-height: 1.5;">Описание</p>
+                </div>
+                <div style="margin-top: 15px;">
+                    <button th:hx-get="'/news/' + ${news.id}" hx-target="#main-content" th:hx-push-url="'/news/' + ${news.id}" class="btn" style="background: #3498db; color: white; border: none; padding: 8px 20px; border-radius: 4px; font-weight: bold; cursor: pointer;">Открыть целиком</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

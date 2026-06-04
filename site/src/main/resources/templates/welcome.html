@@ -1,0 +1,113 @@
+<div th:fragment="content" style="width: 100%;">
+    
+    <!-- Приветственная карточка -->
+    <div class="goskom-card">
+        <h2 class="card-title">👋 Добро пожаловать на ГосКом!</h2>
+        <p>Здесь вы можете управлять своими коммунальными услугами, просматривать баланс и передавать показания счетчиков.</p>
+    </div>
+
+    <!-- Блок новостей ЖКХ -->
+    <div class="goskom-card" style="margin-top: 30px; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #f1f2f6; padding-bottom: 10px;">
+            <h3 class="card-title" style="margin: 0; font-size: 18px; color: #2c3e50;">📢 Последние новости и объявления ЖКХ</h3>
+            
+            <!-- Переход на общую ленту новостей через HTMX -->
+            <button hx-get="/news" 
+                    hx-target="#main-content" 
+                    hx-push-url="/news" 
+                    class="btn" 
+                    style="background: #34495e; color: white; border: none; padding: 8px 16px; font-size: 13px; border-radius: 4px; font-weight: bold; cursor: pointer;">
+                👉 Все новости
+            </button>
+        </div>
+
+        <!-- Ситуация А: Если новостей в базе реально нет (таблица пустая) -->
+        <div th:if="${latestNews == null || #lists.isEmpty(latestNews)}" style="text-align: center; color: #7f8c8d; padding: 20px; font-style: italic;">
+            На данный момент свежих объявлений и новостей нет. 
+        </div>
+
+        <!-- Ситуация Б: Карточки новостей (выведутся, если в списке есть элементы) -->
+        <div th:unless="${latestNews == null || #lists.isEmpty(latestNews)}" style="display: flex; gap: 20px; flex-wrap: wrap;">
+            
+            <div th:each="news : ${latestNews}" 
+                 style="flex: 1; min-width: 260px; background: #f8f9fa; border-radius: 6px; border-left: 4px solid #3498db; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                
+                <div>
+                    <!-- Изображение к новости -->
+                    <div th:if="${news.imageUrl != null && !news.imageUrl.isEmpty()}" style="margin-bottom: 10px;">
+                        <img th:src="${news.imageUrl}" style="width: 100%; height: 120px; object-fit: cover; border-radius: 4px;">
+                    </div>
+                    
+                    <h4 th:text="${news.title}" style="margin: 0 0 6px 0; color: #2c3e50; font-size: 15px; font-weight: bold;">Заголовок</h4>
+                    <p th:text="${news.shortDescription}" style="color: #555; font-size: 13px; margin: 0 0 12px 0; line-height: 1.4;">Краткое описание...</p>
+                </div>
+
+                <!-- Подвал с датой и кнопкой перехода -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 8px; border-top: 1px dashed #ddd;">
+                    <span th:text="${#temporals.format(news.createdAt, 'dd.MM.yyyy')}" style="font-size: 11px; color: #95a5a6; font-weight: 600;">01.06.2026</span>
+                    
+                    <button th:hx-get="'/news/' + ${news.id}" 
+                            hx-target="#main-content" 
+                            th:hx-push-url="'/news/' + ${news.id}" 
+                            style="color: #3498db; background: none; border: none; font-weight: 700; font-size: 12px; cursor: pointer; padding: 0;">
+                        Читать далее →
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="goskom-card" style="margin-top: 30px; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #f1f2f6; padding-bottom: 10px;">
+            <h3 class="card-title" style="margin: 0; font-size: 18px; color: #2c3e50;">📢 Текущие отключения и ремонтные работы</h3>
+            
+            <button hx-get="/outages" 
+                    hx-target="#main-content" 
+                    hx-push-url="/outages" 
+                    class="btn" 
+                    style="background: #34495e; color: white; border: none; padding: 8px 16px; font-size: 13px; border-radius: 4px; font-weight: bold; cursor: pointer;">
+                📊 Мониторинг сетей
+            </button>
+        </div>
+
+        <div th:if="${latestOutages == null || #lists.isEmpty(latestOutages)}" 
+             style="text-align: center; color: #27ae60; background: #e8f8f5; padding: 20px; border-radius: 6px; font-weight: 600; font-size: 14px; border: 1px solid #a3e4d7;">
+            ✅ Все системы работают штатно. Аварийных или плановых отключений не зафиксировано.
+        </div>
+
+        <div th:unless="${latestOutages == null || #lists.isEmpty(latestOutages)}" style="display: flex; flex-direction: column; gap: 15px;">
+            
+            <div th:each="outage : ${latestOutages}" 
+                 style="background: #f8f9fa; border-radius: 6px; padding: 15px; display: flex; align-items: center; justify-content: space-between; border-left: 4px solid; box-shadow: 0 2px 4px rgba(0,0,0,0.02);"
+                 th:styleappend="${outage.emergency} ? 'border-left-color: #e74c3c;' : 'border-left-color: #f1c40f;'">
+                
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <span style="font-size: 24px; display: inline-block; min-width: 30px; text-align: center;">
+                        <span th:if="${outage.type.name() == 'COLD_WATER' or outage.type.name() == 'HOT_WATER'}">💧</span>
+                        <span th:if="${outage.type.name() == 'ELECTRICITY'}">⚡</span>
+                        <span th:if="${outage.type.name() == 'GAS'}">🔥</span>
+                        <span th:if="${outage.type.name() == 'HEATING'}">🌡️</span>
+                    </span>
+                    
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 2px;">
+                            <h4 th:text="${outage.title}" style="margin: 0; color: #2c3e50; font-size: 15px; font-weight: bold;">Заголовок работы</h4>
+                            <span th:if="${outage.emergency}" style="font-size: 11px; color: #e74c3c; background: #fadbd8; padding: 1px 6px; border-radius: 4px; font-weight: bold; text-transform: uppercase;">Авария</span>
+                            <span th:unless="${outage.emergency}" style="font-size: 11px; color: #d4ac0d; background: #fef9e7; padding: 1px 6px; border-radius: 4px; font-weight: bold; text-transform: uppercase;">План</span>
+                        </div>
+                        <p th:text="${outage.description}" style="margin: 0; color: #555; font-size: 13px; line-height: 1.4;">Описание подробностей...</p>
+                    </div>
+                </div>
+
+                <div style="text-align: right; min-width: 140px; font-size: 12px; color: #7f8c8d; border-left: 1px dashed #ddd; padding-left: 15px;">
+                    <div style="font-size: 10px; font-weight: bold; text-transform: uppercase; margin-bottom: 2px; color: #95a5a6;">
+                        Планируемое ВКЛ:
+                    </div>
+                    <div th:text="${#temporals.format(outage.endDate, 'dd.MM HH:mm')}" style="color: #2c3e50; font-weight: 700; font-size: 13px;"></div>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+</div>

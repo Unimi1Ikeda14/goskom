@@ -1,77 +1,126 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Личный кабинет | GosKom</title>
-    <link rel="stylesheet" th:href="@{/style.css}"> <style>
-        .profile-card {
-            text-align: left;
-            border-top: 2px solid #3498db;
-            padding-top: 20px;
-        }
-        .info-row {
-            margin-bottom: 15px;
-            font-size: 16px;
-        }
-        .info-label {
-            font-weight: bold;
-            color: #7f8c8d;
-        }
-        .nav-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 25px;
-        }
-        .btn-secondary {
-            background-color: #95a5a6;
-            text-decoration: none;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 4px;
-            text-align: center;
-            flex: 1;
-        }
-        .btn-main {
-            background-color: #3498db;
-            text-decoration: none;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 4px;
-            text-align: center;
-            flex: 1;
-        }
-    </style>
-</head>
-<body>
+<div th:fragment="content" class="profile-wrapper">
+    
+    <div th:if="${successMessage}" class="msg-success" th:text="${successMessage}"></div>
+    <div th:if="${error}" class="msg-error" th:text="${error}"></div>
+    
+    <h2 class="form-title" style="text-align: left; margin-bottom: 30px;">Личный кабинет жильца</h2>
 
-<div class="login-container">
-    <h2>Личный кабинет</h2>
-
-    <div class="profile-card">
-        <div class="info-row">
-            <span class="info-label">Имя:</span>
-            <span th:text="${user.name}">Имя пользователя</span>
-        </div>
+    <div class="profile-grid">
         
-        <div class="info-row">
-            <span class="info-label">Email:</span>
-            <span th:text="${user.email}">example@mail.com</span>
+        <div class="profile-sidebar" style="display: flex; flex-direction: column; gap: 20px;">
+            
+            <div class="goskom-card text-center">
+                <div class="avatar-wrapper">
+                    <img th:if="${user.avatarPath != null}" th:src="${user.avatarPath}" alt="Avatar" class="avatar-img">
+                    <div th:unless="${user.avatarPath != null}" class="avatar-placeholder">👤</div>
+                </div>
+                
+                <h3 th:text="${user.name}" style="color: #2c3e50; margin-bottom: 5px;">Имя пользователя</h3>
+                <p th:text="${user.email}" style="color: #7f8c8d; font-size: 14px; margin-bottom: 15px;">email@example.com</p>
+                
+                <form th:action="@{/profile/avatar}" method="POST" enctype="multipart/form-data" hx-post="/profile/avatar" hx-encoding="multipart/form-data" hx-target="closest .profile-wrapper" hx-swap="outerHTML" style="margin-top: 15px;">
+                    <label class="btn btn-primary" style="display: inline-block; width: auto; font-size: 13px; padding: 8px 15px; cursor: pointer;">
+                        Выбрать фото
+                        <input type="file" name="avatar" accept="image/*" required style="display: none;" onchange="this.closest('form').dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}))">
+                    </label>
+                </form>
+            </div>
+
+            <div class="goskom-card" style="display: flex; flex-direction: column; gap: 12px; padding: 20px;">
+                <h3 class="card-title" style="margin-bottom: 5px;">📊 Коммунальный учёт</h3>
+                <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 10px;">Внесение показаний и просмотр архива потребления ресурсов.</p>
+                
+                <button hx-get="/meters" 
+                        hx-target="closest .profile-wrapper" 
+                        hx-swap="outerHTML" 
+                        hx-push-url="true"
+                        class="btn" style="background: #3498db; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; text-align: center;">
+                    💧 Ввести показания счетчиков
+                </button>
+                
+                <button hx-get="/meters/history" 
+                        hx-target="closest .profile-wrapper" 
+                        hx-swap="outerHTML" 
+                        hx-push-url="true"
+                        class="btn" style="background: #2c3e50; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; text-align: center;">
+                    📜 История и архив показаний
+                </button>
+            </div>
+
+            <div class="goskom-card" style="display: flex; flex-direction: column; gap: 12px; padding: 20px;">
+                <h3 class="card-title" style="margin-bottom: 5px;">🛠️ Служба поддержки</h3>
+                <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 10px;">Создание официальных обращений и связь с диспетчером ГосКом.</p>
+                
+                <button hx-get="/support" 
+                        hx-target="#main-content" 
+                        hx-push-url="/support" 
+                        class="btn" style="background: #27ae60; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; text-align: center;">
+                    📥 Мои заявки в ЖКХ
+                </button>
+                
+                <button hx-get="/support/create" 
+                        hx-target="#main-content" 
+                        hx-push-url="/support/create" 
+                        class="btn" style="background: #16a085; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; text-align: center;">
+                    📝 Написать диспетчеру
+                </button>
+            </div>
         </div>
 
-        <div class="info-row">
-            <span class="info-label">Аккаунт создан:</span>
-            <span th:text="${#temporals.format(user.createdAt, 'dd.MM.yyyy HH:mm')}">01.01.2026</span>
-        </div>
-    </div>
+        <div class="goskom-card">
+            <h3 class="card-title card-title-link" hx-get="/billing" hx-target="#main-content" hx-push-url="/billing">
+                📜 Мои квитанции <span class="title-link-arrow">→</span>
+            </h3>
+            
+            <div class="bill-list">
+                <div th:if="${#lists.isEmpty(recentBills)}" class="text-center no-bills-profile">
+                    У вас нет активных счетов.
+                </div>
 
-    <div class="nav-buttons">
-        <a th:href="@{/api/bills}" class="btn-main">Мои счета</a>
-        
-        <form th:action="@{/logout}" method="post" style="flex: 1;">
-            <button type="submit" class="btn-secondary" style="width: 100%;">Выйти</button>
-        </form>
+                <div th:unless="${#lists.isEmpty(recentBills)}" th:each="bill : ${recentBills}" class="bill-item">
+                    <div>
+                        <div class="bill-name" th:text="${bill.type.displayName}">Название услуги</div>
+                        
+                        <div style="font-size: 12px; color: #7f8c8d; margin-bottom: 8px;">
+                            от <span th:text="${bill.createdAt != null} ? ${#temporals.format(bill.createdAt, 'dd.MM.yyyy')} : '—'">01.01.2026</span>
+                        </div>
+                        
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <span th:if="${bill.paid}" class="badge-paid">Оплачено</span>
+                            
+                            <button th:unless="${bill.paid}" 
+                                    th:hx-post="'/profile/pay-bill/' + ${bill.id}" 
+                                    hx-target="closest .profile-wrapper"
+                                    hx-swap="outerHTML"
+                                    class="btn-meter-ok">
+                                Оплатить
+                            </button>
+
+                            <button th:hx-get="'/billing/' + ${bill.id}"
+                                    hx-target="closest .profile-wrapper"
+                                    hx-swap="outerHTML"
+                                    hx-push-url="true"
+                                    class="btn-details"
+                                    style="padding: 4px 10px; font-size: 12px; background: #34495e; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                🔎 Детали
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bill-amount bill-amount-status" 
+                         th:text="${bill.amount} + ' BYN'"
+                         th:classappend="${bill.paid} ? 'text-paid' : 'text-unpaid'">
+                        0.00 BYN
+                    </div>
+                </div>
+                
+                <div th:if="${#lists.size(recentBills) >= 3}" class="profile-billing-link-block">
+                    <span hx-get="/billing" hx-target="#main-content" hx-push-url="/billing" class="link-to-all-bills">
+                        Посмотреть все счета и фильтры →
+                    </span>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
-
-</body>
-</html>

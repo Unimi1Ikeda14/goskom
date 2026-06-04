@@ -1,0 +1,65 @@
+<div class="profile-wrapper">
+    
+    <div style="margin-bottom: 25px;">
+        <button hx-get="/profile" hx-target="closest .profile-wrapper" hx-swap="outerHTML" hx-push-url="true" class="btn" style="padding: 10px 20px; background-color: #7f8c8d; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">
+            ← Вернуться в профиль
+        </button>
+    </div>
+
+    <div class="goskom-card" style="border-top: 5px solid #2c3e50; padding: 30px;">
+        <div class="history-header-flex">
+            <div>
+                <h2 class="card-title" style="font-size: 22px; margin: 0;">📜 История и архив показаний</h2>
+                <p style="color: #7f8c8d; margin: 5px 0 0 0;">Полный журнал отправленных вами данных по приборам учета ресурсов.</p>
+            </div>
+            
+            <select name="historyType" 
+                    hx-get="/meters/history" 
+                    hx-target="closest .profile-wrapper" 
+                    hx-swap="outerHTML" 
+                    class="input-field select-field" style="padding: 8px; border-radius: 4px; border: 1px solid #ccc; min-width: 200px;">
+                <option value="all" th:selected="${selectedType == 'all'}">🔍 Все ресурсы</option>
+                <option value="COLD_WATER" th:selected="${selectedType == 'COLD_WATER'}">💧 Холодная вода</option>
+                <option value="HOT_WATER" th:selected="${selectedType == 'HOT_WATER'}">🔥 Горячая вода</option>
+                <option value="ELECTRICITY" th:selected="${selectedType == 'ELECTRICITY'}">⚡ Электроэнергия</option>
+                <option value="GAS" th:selected="${selectedType == 'GAS'}">💨 Газоснабжение</option>
+            </select>
+        </div>
+
+        <div class="table-responsive">
+            <table class="goskom-table meter-history-table">
+                <thead>
+                    <tr style="background-color: #f8f9fa; border-bottom: 2px solid #bdc3c7;">
+                        <th style="text-align: left; padding: 12px;">Дата подачи</th>
+                        <th style="text-align: center; padding: 12px;">Ресурс</th>
+                        <th style="text-align: right; padding: 12px;">Зафиксированное значение</th>
+                        <th style="text-align: right; padding: 12px;">Расход с прошлого периода</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${#lists.isEmpty(readings)}">
+                        <td colspan="4" style="text-align: center; padding: 30px; color: #7f8c8d; font-style: italic;">
+                            История показаний пуста. Вы еще не отправляли данные.
+                        </td>
+                    </tr>
+                    
+                    <tr th:unless="${#lists.isEmpty(readings)}" th:each="r : ${readings}" style="border-bottom: 1px solid #f1f2f6;">
+                        <td data-label="Дата подачи:" style="padding: 14px 12px; color: #2c3e50; font-weight: 500;" 
+                            th:text="${r.createdAt != null ? #temporals.format(r.createdAt, 'dd.MM.yyyy HH:mm') : '—'}">01.06.2026 12:00</td>
+                        
+                        <td data-label="Ресурс:" style="padding: 14px 12px; text-align: center; font-weight: 600;">
+                            <span th:text="${r.type.icon + ' ' + r.type.displayName}">💧 Холодная вода</span>
+                        </td>
+                        
+                        <td data-label="Значение:" style="padding: 14px 12px; text-align: right; font-weight: 700; color: #2c3e50;"
+                            th:text="${r.value} + ${r.type.name() == 'ELECTRICITY' ? ' кВт/ч' : ' м³'}">105.4 м³</td>
+                        
+                        <td data-label="Расход:" style="padding: 14px 12px; text-align: right; color: #27ae60; font-weight: 600;" 
+                            th:text="${r.consumption != null ? '+' + r.consumption : '—'}">+4.2</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

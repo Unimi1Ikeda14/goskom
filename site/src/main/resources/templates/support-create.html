@@ -1,0 +1,55 @@
+<div th:fragment="content" style="max-width: 600px; margin: 0 auto; padding: 20px;">
+    
+    <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+        <h3 style="margin-top: 0; color: #2c3e50; font-weight: 800; font-size: 20px; border-bottom: 2px solid #f1f2f6; padding-bottom: 10px;">
+            📝 Новое обращение в диспетчерскую
+        </h3>
+        
+        <form hx-post="/support/create" hx-target="#main-content" hx-push-url="/support" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
+            
+            <div>
+                <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 13px; color: #34495e;">Категория проблемы:</label>
+                <select name="category" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; background: white; font-size: 14px;">
+                    <option value="Сантехника">🚰 Сантехника и водоснабжение</option>
+                    <option value="Электрика">⚡ Электрика и освещение</option>
+                    <option value="Отопление">🌡️ Отопление</option>
+                    <option value="Благоустройство">🌳 Двор и благоустройство</option>
+                    <option value="Другое">❓ Другой вопрос</option>
+                </select>
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 13px; color: #34495e;">Адрес объекта (где требуется помощь):</label>
+                <input type="text" 
+                       name="address" 
+                       required 
+                       placeholder="Например: ул. Московская, д. 24, кв. 48" 
+                       style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px;">
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 13px; color: #34495e;">Краткая суть (Заголовок):</label>
+                <input type="text" name="title" required placeholder="Например: Срочно течет батарея в комнате" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px;">
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 13px; color: #34495e;">Подробное описание проблемы:</label>
+                <textarea name="description" required placeholder="Укажите детали, номер подъезда, код домофона, удобное время для визита мастера..." rows="5" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; resize: vertical;"></textarea>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button type="button" 
+                        hx-get="/support" 
+                        hx-target="#main-content" 
+                        hx-push-url="/support" 
+                        style="flex: 1; background: #e74c3c; color: white; border: none; padding: 12px; font-weight: bold; border-radius: 4px; cursor: pointer;">
+                    ❌ Отмена
+                </button>
+                
+                <button type="submit" style="flex: 2; background: #2c3e50; color: white; border: none; padding: 12px; font-weight: bold; border-radius: 4px; cursor: pointer;">
+                    🚀 Отправить в службу ЖКХ
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

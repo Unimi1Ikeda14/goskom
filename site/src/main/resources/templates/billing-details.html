@@ -22,7 +22,7 @@
                       th:text="'Лицевой счёт: №' + ${user.id} + '00' + ${user.id}">Л/С: №1001</span>
             </div>
             
-            <div>
+            <div style="text-align: right; min-width: 150px;">
                 <span th:if="${bill.paid}" class="badge-paid" style="display: inline-block; padding: 6px 14px; font-weight: 700; font-size: 13px; background-color: #2ecc71; color: white; border-radius: 4px;">
                     ОПЛАЧЕНО
                 </span>
@@ -38,42 +38,41 @@
         <h3 class="card-title" style="font-size: 18px; margin-bottom: 15px; color: #34495e;">📊 Расшифровка тарифов и объемов</h3>
         
         <div class="table-responsive" style="margin-bottom: 25px;">
-            <table class="goskom-table bill-invoice-table" style="width: 100%; border-collapse: collapse;">
+            <table class="goskom-table" style="width: 100%; border-collapse: collapse;">
                 <thead>
                     <tr style="background-color: #f8f9fa;">
-                        <th>Вид услуги</th>
-                        <th style="text-align: center;">Учтенные показания</th>
-                        <th style="text-align: center;">Установленный тариф</th>
-                        <th style="text-align: right;">Сумма</th>
+                        <th style="text-align: left; padding: 12px; border-bottom: 2px solid #bdc3c7;">Вид услуги</th>
+                        <th style="text-align: center; padding: 12px; border-bottom: 2px solid #bdc3c7;">Учтенные показания</th>
+                        <th style="text-align: center; padding: 12px; border-bottom: 2px solid #bdc3c7;">Установленный тариф</th>
+                        <th style="text-align: right; padding: 12px; border-bottom: 2px solid #bdc3c7;">Сумма</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td data-label="Вид услуги:" style="font-weight: 600; color: #2c3e50;" th:text="${bill.type.displayName}">Холодная вода</td>
+                        <td style="padding: 15px 12px; font-weight: 600; color: #2c3e50;" th:text="${bill.type.displayName}">Холодная вода</td>
                         
-                        <td data-label="Показания:" style="text-align: center; font-weight: 600; color: #2c3e50;">
+                        <td style="padding: 15px 12px; text-align: center; font-weight: 600; color: #2c3e50;">
                             <span th:if="${bill.type.name() == 'COLD_WATER'}" th:text="${user.coldWater != null ? user.coldWater + ' м³' : '0.0 м³'}">0.0 м³</span>
                             <span th:if="${bill.type.name() == 'HOT_WATER'}" th:text="${user.hotWater != null ? user.hotWater + ' м³' : '0.0 м³'}">0.0 м³</span>
                             <span th:if="${bill.type.name() == 'ELECTRICITY'}" th:text="${user.electricity != null ? user.electricity + ' кВт/ч' : '0 кВт/ч'}">0 кВт/ч</span>
                             <span th:if="${bill.type.name() != 'COLD_WATER' && bill.type.name() != 'HOT_WATER' && bill.type.name() != 'ELECTRICITY'}" style="color: #95a5a6; font-style: italic;">Общий тариф</span>
                         </td>
                         
-                        <td data-label="Тариф:" style="text-align: center; color: #7f8c8d;">
+                        <td style="padding: 15px 12px; text-align: center; color: #7f8c8d;">
                             <span th:if="${bill.type.name() == 'COLD_WATER'}">1.85 BYN / м³</span>
                             <span th:if="${bill.type.name() == 'HOT_WATER'}">4.10 BYN / м³</span>
                             <span th:if="${bill.type.name() == 'ELECTRICITY'}">0.27 BYN / кВт</span>
                             <span th:if="${bill.type.name() != 'COLD_WATER' && bill.type.name() != 'HOT_WATER' && bill.type.name() != 'ELECTRICITY'}">Субсидированный</span>
                         </td>
                         
-                        <td data-label="Сумма к оплате:" style="text-align: right; font-weight: 700; color: #2c3e50; font-size: 16px;" 
+                        <td style="padding: 15px 12px; text-align: right; font-weight: 700; color: #2c3e50; font-size: 16px;" 
                             th:text="${bill.amount} + ' BYN'">0.00 BYN</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- Нижний блок с плательщиком адаптирован флексами -->
-        <div class="bill-summary-box">
+        <div style="background: #fdfefe; border: 1px solid #e2e8f0; border-radius: 6px; padding: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
             <div>
                 <span style="font-size: 13px; color: #95a5a6; display: block; text-transform: uppercase; letter-spacing: 0.5px;">Плательщик:</span>
                 <strong style="font-size: 16px; color: #2c3e50;" th:text="${user.name}">Имя Жильца</strong>
@@ -86,7 +85,8 @@
             </div>
         </div>
 
-        <div class="bill-footer-actions">
+        <div style="margin-top: 25px; display: flex; justify-content: flex-end;">
+            
             <button th:unless="${bill.paid}"
                     th:hx-post="'/profile/pay-bill/' + ${bill.id}" 
                     hx-target="closest .profile-wrapper"
@@ -101,6 +101,7 @@
                  th:text="'✔️ Квитанция успешно проведена и оплачена ' + ${bill.paidAt != null ? #temporals.format(bill.paidAt, 'dd.MM.yyyy в HH:mm') : '—'}">
                 Счёт оплачен.
             </div>
+            
         </div>
 
     </div>

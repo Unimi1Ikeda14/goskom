@@ -1,0 +1,60 @@
+<div th:fragment="content" style="max-width: 900px; margin: 0 auto; padding: 20px;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <div>
+            <h1 style="color: #2c3e50; margin: 0 0 5px 0; font-weight: 800; font-size: 28px;">Мониторинг отключений</h1>
+            <p style="color: #7f8c8d; margin: 0; font-size: 15px;">Актуальная информация о плановых ремонтах и ликвидации аварий в системе ГосКом</p>
+        </div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(outages)}" 
+         style="text-align: center; background: white; padding: 50px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+        <div style="font-size: 60px; margin-bottom: 15px;">✅</div>
+        <h3 style="color: #2c3e50; margin: 0 0 10px 0;">Все системы работают штатно</h3>
+        <p style="color: #7f8c8d; margin: 0; font-size: 14px;">На данный момент аварийных или плановых отключений не зафиксировано.</p>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+        <div th:each="outage : ${outages}" 
+             style="background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); display: flex; overflow: hidden; border-left: 6px solid;"
+             th:styleappend="${outage.emergency} ? 'border-left-color: #e74c3c;' : 'border-left-color: #f1c40f;'">
+            
+            <div style="padding: 25px; display: flex; align-items: center; justify-content: center; background: #fafbfc; min-width: 70px; font-size: 32px;">
+                <span th:if="${outage.type.name() == 'COLD_WATER' or outage.type.name() == 'HOT_WATER'}">💧</span>
+                <span th:if="${outage.type.name() == 'ELECTRICITY'}">⚡</span>
+                <span th:if="${outage.type.name() == 'GAS'}">🔥</span>
+                <span th:if="${outage.type.name() == 'HEATING'}">🌡️</span>
+            </div>
+
+            <div style="padding: 25px; flex-grow: 1; display: flex; flex-direction: column; gap: 10px;">
+                
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 15px;">
+                    <h2 th:text="${outage.title}" style="margin: 0; color: #2c3e50; font-size: 19px; font-weight: 700;">Название работы</h2>
+                    
+                    <span th:if="${outage.emergency}" 
+                          style="background: #fadbd8; color: #e74c3c; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; text-transform: uppercase; white-space: nowrap;">
+                        ⚠️ Аварийная
+                    </span>
+                    <span th:if="${!outage.emergency}" 
+                          style="background: #fef9e7; color: #d4ac0d; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; text-transform: uppercase; white-space: nowrap;">
+                        📅 Плановая
+                    </span>
+                </div>
+
+                <p th:text="${outage.description}" style="margin: 0; color: #555; font-size: 14px; line-height: 1.6;">Описание подробностей проведения работ...</p>
+                
+                <div style="display: flex; gap: 20px; margin-top: 5px; padding-top: 15px; border-top: 1px dashed #eaeded; color: #7f8c8d; font-size: 13px;">
+                    <div>
+                        <strong>Отключение:</strong> 
+                        <span th:text="${#temporals.format(outage.startDate, 'dd.MM.yyyy HH:mm')}">01.01.2026 08:00</span>
+                    </div>
+                    <div>
+                        <strong>Плановое включение:</strong> 
+                        <span th:text="${#temporals.format(outage.endDate, 'dd.MM.yyyy HH:mm')}" style="color: #2c3e50; font-weight: 600;">01.01.2026 17:00</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
